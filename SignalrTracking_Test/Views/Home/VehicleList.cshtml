@@ -1,0 +1,29 @@
+﻿@model List<Vehicle>
+
+<table id="tblData" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Vehicle Type</th>
+            <th>Plate Number</th>
+            <th>IMEI</th>
+            <th>User</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var vehicle in Model)
+        {
+            <tr>
+                <td>@vehicle.Id</td>
+                <td>@vehicle.VehicleType</td>
+                <td>@vehicle.PlateNumber</td>
+                <td>@vehicle.IMEI</td>
+                <td>@vehicle.ApplicationUserId</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script src="~/js/signalr.js"></script>
+<script src="~/js/hubconnector.js"></script>

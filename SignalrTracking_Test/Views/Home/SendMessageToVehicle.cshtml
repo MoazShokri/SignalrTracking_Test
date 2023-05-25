@@ -1,0 +1,21 @@
+﻿@model MessageTrack
+
+<h2>Send Message</h2>
+
+<form id="messageForm" method="post">
+    <div>
+        <label for="vehicleId">Vehicle ID:</label>
+        <input type="text" id="vehicleId" name="vehicleId" />
+
+        <label for="messageContent">Message:</label>
+        <input type="text" id="messageContent" name="message" />
+
+        <button type="submit">Send Message</button>
+    </div>
+</form>
+
+<div id="messageContainer"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="~/js/signalr.js"></script>
+<script src="~/js/trackingmsghub.js"></script>

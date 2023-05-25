@@ -1,0 +1,122 @@
+﻿@model LastMessagesViewModel
+
+
+<h3 class="col-4" style="background-color:cadetblue">Message Dashboard</h3>
+
+<div id="messageContainer">
+    <!-- Messages will be dynamically added here -->
+</div>
+
+<hr/>
+
+
+<h3 class="mt-3" style="color: olive">Last Messages</h3>
+
+@if (Model.UserLastMessages != null && Model.UserLastMessages.Count > 0)
+{
+    <h5>Your Last Message:</h5>
+
+    <hr />
+
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Type</th>
+                <th scope="col">User Id</th>
+                <th scope="col">Vehicle ID</th>
+                <th scope="col">Time Message</th>
+                <th scope="col">Message</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="table-success">
+                <th scope="row">Success</th>
+                <td>@Model.UserLastMessages[0].UserId</td>
+                <td>@Model.UserLastMessages[0].VehicleId</td>
+                <td>@Model.UserLastMessages[0].SentDateTime</td>
+                <td>@Model.UserLastMessages[0].Message</td>
+            </tr>
+        </tbody>
+    </table>
+}
+
+@if (Model.OtherUsersLastMessages != null && Model.OtherUsersLastMessages.Count > 0)
+{
+    <h5>Last Messages from Other Users:</h5>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Type</th>
+                <th scope="col">User Id</th>
+                <th scope="col">Vehicle ID</th>
+                <th scope="col">Time Message</th>
+                <th scope="col">Message</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var message in Model.OtherUsersLastMessages)
+            {
+                <tr class="table-success">
+                    <th scope="row">Success</th>
+                    <td>@message.UserId</td>
+                    <td>@message.VehicleId</td>
+                    <td>@message.SentDateTime</td>
+                    <td>@message.Message</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if ((Model.UserLastMessages == null || Model.UserLastMessages.Count == 0) && (Model.OtherUsersLastMessages == null || Model.OtherUsersLastMessages.Count == 0))
+{
+    <p>No last messages found.</p>
+}
+
+
+
+
+
+
+
+
+@*@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}*@
+
+
+<div class="container mt-5">
+
+
+
+    <div class="row">
+        <div class="col-3">Total Views: </div>
+        <div class="col-4">
+            <span id="totalViewsCounter"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-3">Total Connection/Users: </div>
+        <div class="col-4">
+            <span id="totalUsersCounter"></span>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script src="~/js/signalr.js"></script>
+<script src="~/js/usersCount.js"></script>
+<script src="~/js/trackingmsghub.js"></script>
+<script src="~/js/datainformation.js"></script>
+
+
+
