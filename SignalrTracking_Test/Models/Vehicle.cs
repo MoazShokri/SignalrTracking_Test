@@ -11,7 +11,9 @@ namespace SignalrTracking_Test.Models
         public char MiddleLetter { get; set; }
         public char RightLetter { get; set; }
         public string IMEI { get; set; }
-        public string ApplicationUserId { get; set; } 
+        public string ApplicationUserId { get; set; }
+        public bool IsActive { get; set; } 
+
 
 
 

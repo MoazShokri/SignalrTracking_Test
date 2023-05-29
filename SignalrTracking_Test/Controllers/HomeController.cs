@@ -20,14 +20,12 @@ namespace SignalrTracking_Test.Controllers
         private readonly UserManager<ApplicationUser>_userManager; // TEST NOT USED
         private readonly ApplicationDbContext _db;
         private readonly IVehicleCustomizeService _customizeService;
-        private readonly IHubContext<VehicleMovementHub> _hubContext; // TEST NOT USED
         private readonly IHubContext<TrackingMsgHub> _hub;
         private readonly IHubContext<DataInformationHub> _hub1;
         private readonly IDataInformationChecker _dataInformationChecker;  // TEST NOT USED
 
         public HomeController(ILogger<HomeController> logger , UserManager<ApplicationUser> userManager ,
            ApplicationDbContext db, IVehicleCustomizeService customizeService , 
-            IHubContext<VehicleMovementHub> hubContext  , 
             IHubContext<TrackingMsgHub> hub,
             IHubContext<DataInformationHub> hub1 ,
              IDataInformationChecker dataInformationChecker)
@@ -36,7 +34,6 @@ namespace SignalrTracking_Test.Controllers
             this._userManager = userManager;
             this._db = db;
             this._customizeService = customizeService;
-            this._hubContext = hubContext;
             this._hub = hub;
             this._hub1 = hub1;
             this._dataInformationChecker = dataInformationChecker;
@@ -85,32 +82,41 @@ namespace SignalrTracking_Test.Controllers
 
             if (latestUpdate != null)
             {
+
+                //// Get the status of the vehicle from the database
+                //var vehicle = _db.Vehicles.FirstOrDefault(v => v.Id == vehicleId);
+
+                //if (vehicle != null && vehicle.IsActive)
+
+                //{
                 // Get the owner(s) of the vehicle
                 var vehicleOwners = _db.userVehicles
-                    .Where(uv => uv.VehicleId == latestUpdate.VehicleId)
-                    .Select(uv => uv.UserId)
-                    .ToList();
-
+                        .Where(uv => uv.VehicleId == latestUpdate.VehicleId)
+                        .Select(uv => uv.UserId)
+                        .ToList();
+              
                 if (vehicleOwners.Count > 0)
-                {
-                    // Broadcast the update to the vehicle owners using SignalR
-                    var message = latestUpdate.Message;
+                    {
+                        // Broadcast the update to the vehicle owners using SignalR
+                        var message = latestUpdate.Message;
+
+                    // Check if the latest message is the same as the previous one
 
                     foreach (var ownerId in vehicleOwners)
-                    {
-                        _hub1.Clients.User(ownerId).SendAsync("ReceiveMessage", message);
-                    }
+                        {
+                            _hub1.Clients.User(ownerId).SendAsync("ReceiveMessage", message);
+                        }
 
-                    // Return the message as a JSON response
-                    return Json(new { message });
-                }
+                        // Return the message as a JSON response
+                        return Json(new { message });
+                    }
+                //}
             }
 
             // If no message is sent, return an empty JSON response
             return Json(new { });
         }
-
-
+       
         public IActionResult Privacy()
         {
             return View();
@@ -145,7 +151,8 @@ namespace SignalrTracking_Test.Controllers
 
 
             return Json(new { data });
-        }
+        } 
+        // TEST CODE NOT USED
         //[Authorize]
         //[HttpGet]
         //public IActionResult SendMessage()
@@ -199,8 +206,8 @@ namespace SignalrTracking_Test.Controllers
             return View();
         }
 
-        [HttpPost]
         [Authorize]
+        [HttpPost]
         public async Task<IActionResult> SendMessageToVehicle(int vehicleId, string message)
         {
             // Check if the message is null or empty
@@ -217,8 +224,19 @@ namespace SignalrTracking_Test.Controllers
                 {
                     return BadRequest("Invalid vehicle or unauthorized access.");
                 }
+               // Check if the vehicle is active
+               var vehicle = _db.Vehicles.FirstOrDefault(v => v.Id == vehicleId);
+               if (vehicle == null)
+               {
+                return BadRequest("Invalid vehicle.");
+               }
 
-                // Create a new message
+              if (!vehicle.IsActive)
+              {
+                return BadRequest("Cannot send message. Vehicle is inactive.");
+              }
+
+            // Create a new message
                 var messageTrack = new MessageTrack
                 {
                     VehicleId = vehicleId,
@@ -227,6 +245,7 @@ namespace SignalrTracking_Test.Controllers
                     UserId = userId
                 };
 
+                
                 // Add the message to the database
                 _db.messageTracks.Add(messageTrack);
                 await _db.SaveChangesAsync();

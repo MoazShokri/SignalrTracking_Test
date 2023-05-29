@@ -24,6 +24,7 @@ namespace SignalrTracking_Test.Services
             var timer = new Timer(async state => await CheckForUpdatesAsync(), null, TimeSpan.Zero, TimeSpan.FromSeconds(10));
 
         }
+        // CODE NOT USED Synchronous
         //private  void CheckForUpdatesAsync(object state)
         //{
         //    // Get the latest update from the DataInformation table

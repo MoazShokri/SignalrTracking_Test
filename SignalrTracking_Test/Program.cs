@@ -49,7 +49,6 @@ app.MapControllerRoute(
 app.MapRazorPages();
 app.MapHub<HubConnector>("/hubs/hubconnector");
 app.MapHub<UserHub>("/hubs/userCount");
-app.MapHub<VehicleMovementHub>("/hubs/vehiclemovementhub");
 app.MapHub<TrackingMsgHub>("/hubs/trackingmsghub");
 app.MapHub<DataInformationHub>("/hubs/datainformationhub");
 app.Run();

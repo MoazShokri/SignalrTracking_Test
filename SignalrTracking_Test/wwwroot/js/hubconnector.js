@@ -29,8 +29,8 @@ function loadDataTable() {
                         <div class="w-75 btn-group" role="group">
                         <a href=""
                         class="btn btn-primary mx-2"> <i class="bi bi-pencil-square"></i> </a>
-                      
-					</div>
+
+					 </div>
                         `
                 },
                 "width": "5%"

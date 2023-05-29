@@ -2,20 +2,21 @@
 
 <h2>Send Message</h2>
 
-<form id="messageForm" method="post">
+<form method="post" asp-action="SendMessageToVehicle">
     <div>
         <label for="vehicleId">Vehicle ID:</label>
-        <input type="text" id="vehicleId" name="vehicleId" />
+        <input type="text" id="vehicleId" name="VehicleId" />
 
         <label for="messageContent">Message:</label>
-        <input type="text" id="messageContent" name="message" />
+        <input type="text" id="messageContent" name="Message" />
 
-        <button type="submit">Send Message</button>
+        <button type="submit" id="sendMessageBtn">Send Message</button>
     </div>
 </form>
 
-<div id="messageContainer"></div>
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="~/js/signalr.js"></script>
 <script src="~/js/trackingmsghub.js"></script>
+

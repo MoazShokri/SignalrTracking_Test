@@ -2,7 +2,7 @@
 {
     public class UserConnection
     {
-
+          
         public string UserId { get; set; }
         public List<string> ConnectionIds { get; set; }
         public List<Vehicle> CustomizedVehicle { get; set; }

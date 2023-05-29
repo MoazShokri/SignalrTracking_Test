@@ -39,7 +39,7 @@ connectionUserCount.onreconnected((connectionId) => {
     document.body.style.background = "green";
 });
 
-connectionUserCount.onreconnecting((error) => {
+connectionUserCount.onreconnecting((error) => { 
     document.body.style.background = "orange";
 });
 

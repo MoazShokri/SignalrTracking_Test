@@ -1,11 +1,14 @@
 ﻿@model LastMessagesViewModel
 
-
 <h3 class="col-4" style="background-color:cadetblue">Message Dashboard</h3>
 
 <div id="messageContainer">
     <!-- Messages will be dynamically added here -->
 </div>
+<div id="noNewMessageContainer" style="display: none;">
+    <p class="no-new-message">No new message</p>
+</div>
+
 
 <hr/>
 
@@ -74,7 +77,6 @@
 {
     <p>No last messages found.</p>
 }
-
 
 
 
