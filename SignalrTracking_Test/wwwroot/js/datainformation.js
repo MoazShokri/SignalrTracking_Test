@@ -1,4 +1,6 @@
-﻿// Create a connection to the DataInformationHub
+﻿//// Frist Old code used
+
+// Create a connection to the DataInformationHub
 //var connection = new signalR.HubConnectionBuilder()
 //    .withUrl("/hubs/datainformationhub")
 //    .build();
@@ -69,13 +71,14 @@
 //////}
 
 
-// Function to update the UI with the received message
-// Receive the message from the hub
+
+//// end Frist Old code used
 
 
 
 
-//// Start code used
+//// Start Old code used
+
 //var lastDisplayedMessage = null;
 //var intervalId = null;
 
@@ -184,8 +187,9 @@
 //    // Start the timer again
 //    startTimer();
 //}
-//// end code used
+//// end Old code used
 
+// Create a connection to the DataInformationHub
 
 var connection = new signalR.HubConnectionBuilder()
     .withUrl("/hubs/datainformationhub")
@@ -194,31 +198,43 @@ var connection = new signalR.HubConnectionBuilder()
 var lastDisplayedMessage = null;
 var intervalId = null;
 
-connection.on("ReceiveMessage", function (message) {
-    console.log("Received message:", message);
+// Receive the message from the hub
 
+connection.on("ReceiveMessage", function (message) {
+      // Handle the received message
+    console.log("Received message:", message);
+     // Update the UI only if the message is not the same as the last displayed message
     if (message !== lastDisplayedMessage) {
         updateUI(message);
         lastDisplayedMessage = message;
+       // Restart the timer after a new message arrives
         restartTimer();
     }
 });
-
+// Start the connection
 connection.start()
     .then(function () {
         console.log("SignalR connection established.");
+
+      // Start the timer to check for updates periodically
         startTimer();
     })
     .catch(function (err) {
         console.error("Error establishing SignalR connection: " + err);
     });
-
+  // Function to update the UI with the received message
 function updateUI(message) {
+        // Display the message in the message container
     var messageContainer = document.getElementById("messageContainer");
     var noNewMessageContainer = document.getElementById("noNewMessageContainer");
     if (messageContainer && noNewMessageContainer) {
+
+         // Hide the no new message container and show the message container
+
         noNewMessageContainer.style.display = "none";
         messageContainer.style.display = "block";
+
+        // Clear the existing messages
         messageContainer.innerHTML = "";
 
         var newMessage = document.createElement("div");
@@ -229,7 +245,7 @@ function updateUI(message) {
 
     }
 }
-
+// Function to display a message indicating no new message
 function displayNoNewMessage() {
     var messageContainer = document.getElementById("messageContainer");
     var noNewMessageContainer = document.getElementById("noNewMessageContainer");
@@ -237,11 +253,13 @@ function displayNoNewMessage() {
     messageContainer.style.display = "none";
     noNewMessageContainer.style.display = "block";
 }
-
+// Function to check for updates
 function checkForUpdates() {
+     // Make an AJAX request to your server endpoint
     fetch("https://localhost:7053/Home/CheckMsg")
         .then(response => response.json())
         .then(data => {
+             // Process the received data and update the UI
             console.log('Received data:', data);
             if (data.message) {
                 updateUI(data.message);
@@ -254,12 +272,12 @@ function checkForUpdates() {
             console.error('Error:', error);
         });
 }
-
+ // Start the timer and check for updates
 function startTimer() {
     var interval = 10000;
     intervalId = setInterval(checkForUpdates, interval);
 }
-
+// Function to restart the timer
 function restartTimer() {
     clearInterval(intervalId);
     startTimer();
